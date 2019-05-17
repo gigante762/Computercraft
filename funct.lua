@@ -237,8 +237,8 @@ function configEstoque()
     for i = 1,totalDeBaus do 
       new()
     end
-    pos.centerX = math.floor(totalDeBaus/colunas)
-    pos.centerY = math.floor(colunas)
+    ppos.centerX = math.floor(totalDeBaus/colunas)
+    pos.centerY = math.floor(totalDeBaus/colunas-1)
     setColunasDeSlots(colunas)
 end
   
