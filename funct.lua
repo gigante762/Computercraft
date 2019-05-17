@@ -147,7 +147,9 @@ end
 function girarEpegar()
     turtle.turnLeft()
     turtle.turnLeft()
-    turtle.suck()
+    for i =1,16 do 
+      turtle.suck()
+    end
     turtle.turnLeft()
     turtle.turnLeft()
 end
