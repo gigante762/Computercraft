@@ -1,0 +1,15 @@
+############################################################
+#Programa que guarda todos os itens de um bau em um estoque#
+############################################################
+
+Chame o aquivo main. 
+Caso tiver uma data ele vai carregar e caso não tiver ele vai configurar uma nova.
+Ponha a turtle e monte o estoque '2d' na frente dela.
+O bau com os itens para pegar e guardar devem estar exatamente atás da turtle.
+
+Deixo meu contato para dúvidas, melhorias, parcerias, enfim. Basta chamar.
+Espero que goste!
+
+Contato: igantekevin@hotmail.com
+
+Fim.
