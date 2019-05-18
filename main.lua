@@ -16,9 +16,10 @@ if a == nil then
   go(pos.centerX,pos.centerY)
   save()
 else
-  dofile("data.lua")
-  print("Dados carregados")
-  guardarTudo()
-  go(pos.centerX,pos.centerY)
-  save()
+    dofile("data.lua")
+    menu()
+    --guardarTudo()
+    go(pos.centerX,pos.centerY)
+    save()
+    menu()
 end
