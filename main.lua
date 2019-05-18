@@ -17,9 +17,9 @@ if a == nil then
   save()
 else
     dofile("data.lua")
-    menu()
-    --guardarTudo()
-    go(pos.centerX,pos.centerY)
-    save()
-    menu()
+    while true do
+      menu()
+      go(pos.centerX,pos.centerY)
+      save()
+    end
 end
