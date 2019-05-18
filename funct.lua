@@ -254,6 +254,7 @@ pegar = function (x,y,quantidade)
   turtle.turnLeft()
   turtle.turnLeft()
   save()
+  menu()
 end
 
 --verificar se tem o item e a quantidade e chamar pegar
