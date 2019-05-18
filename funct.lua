@@ -141,6 +141,7 @@ guardarTudo = function()
             add(item.name,item.count)
         end
     end
+    turtle.select(1)
 end
 
 --gira pega os itens e 'gira de volta'
@@ -237,8 +238,125 @@ function configEstoque()
     for i = 1,totalDeBaus do 
       new()
     end
-    ppos.centerX = math.floor(totalDeBaus/colunas)
+    pos.centerX = math.floor(totalDeBaus/colunas)
     pos.centerY = math.floor(totalDeBaus/colunas-1)
     setColunasDeSlots(colunas)
 end
   
+--funcao para pegar, meche com a parte fisica de ir e pegar
+pegar = function (x,y,quantidade)
+  go(x,y)
+  turtle.suck(quantidade)
+  go(pos.centerX,pos.centerY)
+  turtle.turnLeft()
+  turtle.turnLeft()
+  turtle.drop()
+  turtle.turnLeft()
+  turtle.turnLeft()
+  save()
+end
+
+--verificar se tem o item e a quantidade e chamar pegar
+function validarPegar(item,quantidade)
+  local possuiItem = false
+  local possuiQuantidade = false
+  local indexDoItem = ""
+  for i,v in ipairs(data) do
+      if v.type == item then 
+          --print('Item Encontrado!')
+          possuiItem = true
+          if v.qtd >= quantidade then
+              print('Quantidade existente')
+              possuiQuantidade = true
+              print('Index em data:',indexDoItem)
+              indexDoItem = i
+          elseif v.qtd < quantidade then
+            print("Não há toda essa quantidade.")
+            print("Deseja pegar as ",v.qtd, 'que existem ?  s|n')
+            io.write("Escolha: ")
+            local escolha = io.read()
+            if escolha == "s" then
+              quantidade = v.qtd
+              indexDoItem = i
+              possuiQuantidade = true
+            else
+              print("Escolha inválida.")
+            end
+          end
+      end
+  end
+  if possuiItem and possuiQuantidade then
+      print("Pegando o item solicitado.")
+      data[indexDoItem].qtd=data[indexDoItem].qtd - quantidade -- subtrai na data
+      pegar(data[indexDoItem].x,data[indexDoItem].y,quantidade)
+  else
+      print("Item não encontrado ou não tem a quantidade requerida.")
+      os.sleep(2)
+      menu()
+  end
+end
+
+--mostrar todas os opçoes de itens e suas quantiadades e mandar para validarPegar
+-- funcao principal para pegar um item
+function selectPegar( )
+  term.clear()
+  term.setCursorPos(1,1)
+  --mostra as opcoes
+  for i,v in ipairs(data) do 
+      if v.type ~= "" then
+          local nomeFormatado = string.gsub( v.type,"minecraft:","")
+          print(i,nomeFormatado,v.qtd)
+      end
+  end
+  --esolhe pela string e ve se a string de escolha é igual a estring do type formatada
+  io.write('Nome do item: ')
+  local itemEscolhido = io.read()
+  for i,v in ipairs(data) do
+      local nomeFormatado = string.gsub( v.type,"minecraft:","")
+      if nomeFormatado == itemEscolhido then
+          io.write("Quantidade do item: ")
+          local unidades = tonumber(io.read())
+          validarPegar(v.type,unidades)
+      end
+  end
+end
+
+
+--funcçao de menu inicial
+function menu(  )
+  term.clear()
+  paintutils.drawFilledBox(0,0,20,13,32)
+  term.setCursorPos(8,7)
+  term.write("Guardar")
+  paintutils.drawFilledBox(21,0,40,13,8)
+  term.setCursorPos(28,7)
+  term.write("Pegar")
+  local event,ea,eb,ev = os.pullEvent("mouse_click")
+  if ea == 1 then
+      if eb <= 20 then
+        paintutils.drawFilledBox(0,0,20,13,128)
+        term.setCursorPos(8,7)
+        term.write("Guardar")
+        os.sleep(.1)
+        paintutils.drawFilledBox(0,0,20,13,32)
+        term.setCursorPos(8,7)
+        term.write("Guardar")
+        term.setBackgroundColor(colors.black)
+        term.clear()
+        guardarTudo()
+        term.setCursorPos(1,1)
+      else
+        paintutils.drawFilledBox(21,0,40,13,128)
+        term.setCursorPos(28,7)
+        term.write("Pegar")
+        os.sleep(.1)
+        paintutils.drawFilledBox(0,0,20,13,8)
+        term.setCursorPos(28,7)
+        term.write("Pegar")
+        term.setBackgroundColor(colors.black)
+        term.clear()
+        selectPegar()
+        term.setCursorPos(1,1)
+      end
+  end
+end
